@@ -8,6 +8,61 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
     <style>
         body { margin: 0; padding: 0; }
+
+        h2, h3 {
+            margin: 10px;
+            font-size: 18px;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+        }
+
+        h3 {
+            font-size: 16px;
+        }
+
+        p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 30px;
+            margin-left: 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 7pt;
+            color: white;
+            text-shadow: -.5px 0 black, 0 .5px black, .5px 0 black, 0 -.5px black;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 70px;
+            margin-left: 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 25pt;
+            font-weight:bold;
+            color: white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            
+        }
+
+
+        #subtitle {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin-bottom: 50px;
+            margin-left: 110px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 15pt;
+            color: white;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            
+        }
         
         #map {
                 position: absolute;
@@ -58,6 +113,11 @@
             color: #ffffff;
         }
 
+        #menu a.inactive {
+            background-color: #ffffff;
+            color: #404040;
+        }
+
         #menu a.active:hover {
             background: #3074a4;
         }
@@ -68,6 +128,17 @@
 <body>
     <nav id="menu"></nav>
     <div id="map"></div>
+    
+    <div id="title">
+        West of King County
+    </div>
+    <div id="subtitle">
+        A Focus on Chipotle Locations in Seattle and Bellevue
+    </div>    
+    </div>
+    <p>
+        There are 4 different map tiles that can be toggled by pressing on the buttons! 
+    </p>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhbHNlYTIwMDAiLCJhIjoiY2wydXUwYnRrMDFtMDNtbjRsdHpnbnprdyJ9.8lUi74v2_VFbC-pJftMr9w';
         
@@ -152,6 +223,10 @@
                 },
                 'source': 'uw-tiles'
             });
+
+            map.addControl(new mapboxgl.NavigationControl(), "top-left");
+
+            map.addControl(new mapboxgl.ScaleControl(), "bottom-right");
         });
 
         map.on('idle', () => {
@@ -162,8 +237,9 @@
 
                 // Enumerate ids of the layers.
                 const toggleableLayerIds = ['basemap', 'chipotle', 'chipotle-basemap', 'uw'];
-
+                const textInputs = ['Basemap', 'Chipotle Locations', 'Chipotle Locations on Basemap', 'UW Theme']
                 // Set up the corresponding toggle button for each layer.
+                var i = 0;
                 for (const id of toggleableLayerIds) {
                     // Skip layers that already have a button set up.
                     if (document.getElementById(id)) {
@@ -174,7 +250,8 @@
                     const link = document.createElement('a');
                     link.id = id;
                     link.href = '#';
-                    link.textContent = id;
+                    link.textContent = textInputs[i];
+                    i = i+1; 
                     link.className = 'inactive';
 
                     // Show or hide layer when the toggle is clicked.
@@ -193,6 +270,7 @@
                             clickedLayer,
                             'visibility'
                         );
+
 
                         // Toggle layer visibility by changing the layout object's visibility property.
                         // if it is currently visible, after the clicking, it will be turned off.
