@@ -28,3 +28,14 @@ This is the thematic map layer from the second tile combined with the basemap fr
 ![plot](img/mapbox_screenshot.png) 
 
 This is a map layer designed over Mapbox. It embodies a map theme of UW, which is customized with the colors purple and yellow. The icons and labels are also altered a little in respondance to the UW theme.
+
+
+## Data Sources:
+
+The dataset of the [Chipotle Locations](https://www.kaggle.com/datasets/jeffreybraun/chipotle-locations?resource=download) is taken from Kaggle. The original dataset consists of data within the United States, but I filtered it to only Washington State for own interest.
+
+## Resources:
+
+[Lab 4: Map Design and Tile Generation](https://github.com/jakobzhao/geog458/tree/master/labs/lab04)
+
+[Making Thematic Map on the Internet using MapBox](https://github.com/jakobzhao/geog458/tree/master/weeks/week04)
