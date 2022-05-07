@@ -73,7 +73,7 @@
         
         let map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            style: 'mapbox://styles/mapbox/light-v10', // style URL
             center: [-122.2559435, 47.6002614], // starting position [lng, lat]
             zoom: 11 // starting zoom
         });
@@ -85,6 +85,24 @@
                 'type': 'raster',
                 'tiles': [
                     'tiles/basemap_tiles/{z}/{x}/{y}.png'
+                ],
+                'tileSize': 256,
+                'attribution': 'Map tiles designed by Chalsea Chen</a>'
+            });
+
+            map.addSource('chipotle-tiles', {
+                'type': 'raster',
+                'tiles': [
+                    'tiles/chipotle_tiles/{z}/{x}/{y}.png'
+                ],
+                'tileSize': 256,
+                'attribution': 'Map tiles designed by Chalsea Chen</a>'
+            });
+
+            map.addSource('chipotle-basemap-tiles', {
+                'type': 'raster',
+                'tiles': [
+                    'tiles/chipotle_basemap_tiles/{z}/{x}/{y}.png'
                 ],
                 'tileSize': 256,
                 'attribution': 'Map tiles designed by Chalsea Chen</a>'
@@ -109,6 +127,24 @@
             });
 
             map.addLayer({
+                'id': 'chipotle',
+                'type': 'raster',
+                'layout': {
+                    'visibility': 'none'
+                },
+                'source': 'chipotle-tiles'
+            });
+
+            map.addLayer({
+                'id': 'chipotle-basemap',
+                'type': 'raster',
+                'layout': {
+                    'visibility': 'none'
+                },
+                'source': 'chipotle-basemap-tiles'
+            });
+
+            map.addLayer({
                 'id': 'uw',
                 'type': 'raster',
                 'layout': {
@@ -120,12 +156,12 @@
 
         map.on('idle', () => {
                 // If these two layers were not added to the map, abort
-                if (!map.getLayer('basemap') || !map.getLayer('uw')) {
+                if (!map.getLayer('basemap') || !map.getLayer('uw')|| !map.getLayer('chipotle')|| !map.getLayer('chipotle-basemap')) {
                     return;
                 }
 
                 // Enumerate ids of the layers.
-                const toggleableLayerIds = ['basemap', 'uw'];
+                const toggleableLayerIds = ['basemap', 'chipotle', 'chipotle-basemap', 'uw'];
 
                 // Set up the corresponding toggle button for each layer.
                 for (const id of toggleableLayerIds) {
@@ -143,7 +179,7 @@
 
                     // Show or hide layer when the toggle is clicked.
                     link.onclick = function (e) {
-                        const clickedLayer = this.textContent;
+                        const clickedLayer = this.id;
                         // preventDefault() tells the user agent that if the event does not get explicitly handled, 
                         // its default action should not be taken as it normally would be.
                         e.preventDefault();
